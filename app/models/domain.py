@@ -27,6 +27,6 @@ class DocumentChunk(Base):
     text_content = Column(Text, nullable=False)
     
     # 1536 dimensions matches text-embedding-3-small
-    embedding = Column(Vector(1536), nullable=False)
+    embedding = Column(Vector(384), nullable=False)
 
     document = relationship("Document", back_populates="chunks")

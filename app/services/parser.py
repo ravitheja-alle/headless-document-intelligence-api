@@ -32,36 +32,36 @@ class DocumentParser:
         return " ".join(text.split())
 
     def extract_text(self, file_bytes: bytes) -> List[Dict[str, Any]]:
-        """
-        Extract text from PDF pages.
-        Uses PyMuPDF first.
-        Falls back to OCR for scanned/image-heavy pages.
-        """
         extracted_pages = []
+        
+        try:
+            doc = fitz.open(stream=file_bytes, filetype="pdf")
 
-        # Open PDF from raw bytes
-        doc = fitz.open(stream=file_bytes, filetype="pdf")
+        except Exception as e:
+            logger.error(f"PDF parsing failed: {str(e)}")
+
+            raise ValueError(
+                "The provided file is not a valid or readable PDF."
+            )
+
+        if doc.needs_pass:
+            doc.close()
+            logger.error("Encrypted PDF rejected.")
+            raise ValueError("Encrypted PDFs are not supported. Please remove the password protection.")
 
         for page_num in range(len(doc)):
             page = doc[page_num]
-
-            # Native text extraction
             text = page.get_text("text").strip()
-
-            # OCR fallback for low-text pages
+            
             if len(text) < 50:
-                logger.warning(
-                    f"Page {page_num + 1} has insufficient text. Triggering OCR fallback."
-                )
+                logger.warning(f"Page {page_num + 1} has insufficient text. Triggering OCR fallback.")
                 text = self._extract_ocr(file_bytes, page_num)
-
-            extracted_pages.append(
-                {
-                    "page_number": page_num + 1,
-                    "text": self.clean_text(text),
-                }
-            )
-
+            
+            extracted_pages.append({
+                "page_number": page_num + 1,
+                "text": text
+            })
+            
         doc.close()
         return extracted_pages
 
