@@ -11,7 +11,7 @@ ENV PYTHONUNBUFFERED=1
 # Install OCR + PDF system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tesseract-ocr \
-    libgl1-mesa-glx \
+    libgl1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
