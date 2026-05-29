@@ -20,6 +20,8 @@ The system allows users to upload PDF documents, automatically extract and proce
 
 **Swagger Documentation**: https://raggg.up.railway.app/docs
 
+![Home](Screenshots/swagger-home.png)
+
 ## Why I Built This
 
 Many organizations store critical information inside contracts, invoices, reports, and scanned PDFs. Traditional keyword search struggles to retrieve relevant information from these documents efficiently.
@@ -40,7 +42,7 @@ Users can upload documents, extract structured information, and ask natural lang
 
 ### Semantic Query & Citations
 
-![RAG](screenshots/rag-response.png)
+![RAG](screenshots/query-success.png)
 
 ## Highlights
 
