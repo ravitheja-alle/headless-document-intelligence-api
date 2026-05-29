@@ -42,7 +42,7 @@ Users can upload documents, extract structured information, and ask natural lang
 
 ### Semantic Query & Citations
 
-![RAG](Screenshots/extract-success.png)
+![RAG](Screenshots/query-success.png)
 
 
 ## Highlights
