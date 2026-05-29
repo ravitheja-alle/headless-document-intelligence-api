@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
+    description="""AI-powered document intelligence platform for PDF ingestion,OCR, semantic search, structured extraction, and RAG."""
 )
 
 app.include_router(routes.router)
