@@ -14,9 +14,30 @@ The system allows users to upload PDF documents, automatically extract and proce
 * Dockerized cloud deployment
 * Production-ready REST API
 
-**Production Deployment URL:** `https://raggg.up.railway.app`
+## Demo
 
-**API Documentation:** `https://raggg.up.railway.app/docs`
+**Live API**: https://raggg.up.railway.app
+
+**Swagger Documentation**: https://raggg.up.railway.app/docs
+
+## Why I Built This
+
+Many organizations store critical information inside contracts, invoices, reports, and scanned PDFs. Traditional keyword search struggles to retrieve relevant information from these documents efficiently.
+
+DocQuery AI transforms unstructured PDF documents into searchable knowledge by combining OCR, vector embeddings, semantic retrieval, and Retrieval-Augmented Generation (RAG).
+
+Users can upload documents, extract structured information, and ask natural language questions while receiving citation-backed responses grounded in the source material.
+
+## Highlights
+
+* Production-ready FastAPI backend
+* OCR fallback for scanned PDF documents
+* PostgreSQL + pgvector vector database
+* Semantic document retrieval
+* Retrieval-Augmented Generation (RAG)
+* Structured JSON extraction
+* Dockerized deployment
+* Cloud-hosted on Railway
 
 ---
 
@@ -179,36 +200,9 @@ __CITATIONS__
 
 ---
 
-## 3. Database Schema Mapping
 
-```sql
--- Core Table: Parent Document Tracking
-CREATE TABLE documents (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    filename VARCHAR NOT NULL,
-    upload_timestamp TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
-    status VARCHAR NOT NULL DEFAULT 'Processing'
-);
 
--- Vector Table: Overlapping Text Segment Chunks
-CREATE TABLE document_chunks (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    document_id UUID NOT NULL REFERENCES documents(id) ON DELETE CASCADE,
-    chunk_index INTEGER NOT NULL,
-    page_number INTEGER NOT NULL,
-    text_content TEXT NOT NULL,
-    embedding VECTOR(1536) NOT NULL
-);
-
--- Performance Optimization Indexes
-CREATE INDEX IF NOT EXISTS idx_documents_id ON documents(id);
-CREATE INDEX IF NOT EXISTS idx_document_chunks_document_id ON document_chunks(document_id);
-
-```
-
----
-
-## 4. Operational Setup
+## 3. Operational Setup
 
 ### Environment Configuration (`.env`)
 
@@ -231,7 +225,7 @@ docker run -p 8000:8000 --env-file .env headless-doc-api
 
 ---
 
-## 5. API Verification Interface (Headless Screenshots)
+## 4. API Verification Interface (Headless Screenshots)
 
 Since this application functions entirely without a graphical user interface, execution status and endpoint verification are managed through the automated Swagger UI engine and Postman performance runners.
 
