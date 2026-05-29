@@ -1,7 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "Headless Document Intelligence API"
+    PROJECT_NAME: str = "DocQuery AI"
     VERSION: str = "1.0.0"
     
     # Database configuration
