@@ -26,34 +26,38 @@ The following diagram illustrates the complete end-to-end data processing orches
 
 ```mermaid
 graph TD
-    %% Ingestion Pipeline
-    A[Client: POST /upload] --> B[FastAPI Router]
-    B --> C[DocumentParser Service]
-    C --> D{Native Text Found?}
-    D -- Yes --> E[PyMuPDF Engine]
-    D -- No (<50 chars) --> F[pdfplumber + Tesseract OCR]
-    E --> G[Tiktoken Chunker]
+
+    A[PDF Upload] --> B[FastAPI API]
+    B --> C[Document Parser]
+
+    C --> D{Text Available}
+
+    D -->|Yes| E[PyMuPDF]
+    D -->|No| F[OCR Pipeline]
+
+    E --> G[Chunking Engine]
     F --> G
-    G --> H[Local Embedding Model (Sentence Transformers)]
-    H --> I[(Supabase PostgreSQL + pgvector)]
 
-    %% Extraction Pipeline
-    J[Client: POST /extract] --> K[FastAPI Router]
-    K --> L[Fetch Full Sequential Text]
-    L --> I
-    L --> M[Dynamic Pydantic Schema Generator]
-    M --> N[Local Embedding Model (Sentence Transformers) Structured Output]
-    N --> O[Client: Validated JSON Object]
+    G --> H[Sentence Transformer Embeddings]
 
-    %% RAG Pipeline
-    P[Client: POST /query] --> Q[FastAPI Router]
-    Q --> R[Generate Query Embedding]
-    R --> S[Cosine Distance Query <=> ]
-    S --> I
-    S --> T[Format Text Context Window]
-    T --> U[Local Embedding Model (Sentence Transformers) Stream Response]
-    U --> V[Client: SSE Text Stream + JSON Citations]
+    H --> I[(PostgreSQL + pgvector)]
 
+    J[Document Extraction Request]
+    J --> K[Fetch Document Content]
+    K --> I
+    K --> L[Structured Extraction Service]
+
+    M[Semantic Search Request]
+    M --> N[Generate Query Embedding]
+    N --> H
+
+    N --> O[Vector Similarity Search]
+    O --> I
+
+    O --> P[Context Builder]
+    P --> Q[RAG Response Engine]
+
+    Q --> R[Answer with Citations]
 ```
 ## Tech Stack
 
