@@ -20,6 +20,10 @@ The system allows users to upload PDF documents, automatically extract and proce
 
 **Swagger Documentation**: https://raggg.up.railway.app/docs
 
+## Demo Video
+
+Watch the project walkthrough: https://youtu.be/wPZcJZ9lr8g
+
 ![Home](Screenshots/swagger-home.png)
 
 ## Why I Built This
